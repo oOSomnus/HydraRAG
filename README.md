@@ -1,6 +1,7 @@
 <p align="center">
   <img src="hydra-logo-purple-1024.png" alt="Hydra Logo" width="180"/>
 </p>
+
 # Hydra: Structured Cross-Source Enhanced LLM Reasoning
 
 🔗 [Website](https://stevetantan.github.io/Hydra/)  
@@ -175,6 +176,7 @@ python check_answer.py \
 
 ## Claims
 This project uses the Apache 2.0 protocol. The project assumes no legal responsibility for any of the model's output and will not be held liable for any damages that may result from the use of the resources and output.
+
 
 
 
