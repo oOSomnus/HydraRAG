@@ -2,10 +2,40 @@
   <img src="hydra-logo-purple-1024.png" alt="Hydra Logo" width="180"/>
 </p>
 
-# Hydra: Structured Cross-Source Enhanced LLM Reasoning
+<p align="center">
+  <a href="https://stevetantan.github.io/Hydra/" title="Website" target="_blank" rel="noopener">
+    <!-- globe icon -->
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         aria-hidden="true">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="2" y1="12" x2="22" y2="12"></line>
+      <path d="M12 2a15.3 15.3 0 0 0 0 20"></path>
+      <path d="M12 2a15.3 15.3 0 0 1 0 20"></path>
+    </svg>
+    <span>&nbsp;🔗Official Website</span>
+  </a>
+  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="https://arxiv.org/pdf/2505.17464" title="Paper (PDF)" target="_blank" rel="noopener">
+    <!-- file/pdf icon -->
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="8" y1="13" x2="16" y2="13"></line>
+      <line x1="8" y1="17" x2="16" y2="17"></line>
+    </svg>
+    <span>&nbsp;📄 Paper (PDF)</span>
+  </a>
+</p>
 
-🔗 [Website](https://stevetantan.github.io/Hydra/)  
-📄 [Paper (PDF)](https://arxiv.org/pdf/2505.17464)  
+# Hydra: Structured Cross-Source Enhanced LLM Reasoning (EMNLP2025, Main Conference)  
+
+
+
+
+
 ## News!
 Our paper has been accepted for publication at EMNLP 2025 Main Conference! 
 
@@ -176,6 +206,7 @@ python check_answer.py \
 
 ## Claims
 This project uses the Apache 2.0 protocol. The project assumes no legal responsibility for any of the model's output and will not be held liable for any damages that may result from the use of the resources and output.
+
 
 
 
