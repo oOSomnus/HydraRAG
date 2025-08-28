@@ -56,6 +56,11 @@ If you are interested or inspired by this work, you can cite us by:
 ## Code Documentation 
 Hydra unifies structured knowledge graphs, Wikipedia documents, and live web search so that large language models can **reason over verified multi‑source evidence**. 
 
+
+<p align="center">
+  <img src="intro.png" alt="Hydra baseline"/>
+</p>
+
 ---
 
 ## Directory layout
@@ -206,6 +211,7 @@ python check_answer.py \
 
 ## Claims
 This project uses the Apache 2.0 protocol. The project assumes no legal responsibility for any of the model's output and will not be held liable for any damages that may result from the use of the resources and output.
+
 
 
 
