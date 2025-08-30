@@ -58,7 +58,7 @@ Hydra unifies structured knowledge graphs, Wikipedia documents, and live web sea
 
 
 <p align="center">
-  <img src="intro.png" alt="Hydra baseline"/>
+  <img src="intro.jpg" alt="Hydra baseline"/>
 </p>
 
 ---
@@ -211,6 +211,7 @@ python check_answer.py \
 
 ## Claims
 This project uses the Apache 2.0 protocol. The project assumes no legal responsibility for any of the model's output and will not be held liable for any damages that may result from the use of the resources and output.
+
 
 
 
