@@ -2,35 +2,40 @@
   <img src="hydra-logo-purple-1024.png" alt="Hydra Logo" width="180"/>
 </p>
 
-<p align="center">
-  <a href="https://stevetantan.github.io/Hydra/" title="Website" target="_blank" rel="noopener">
-    <!-- globe icon -->
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-         aria-hidden="true">
-      <circle cx="12" cy="12" r="10"></circle>
-      <line x1="2" y1="12" x2="22" y2="12"></line>
-      <path d="M12 2a15.3 15.3 0 0 0 0 20"></path>
-      <path d="M12 2a15.3 15.3 0 0 1 0 20"></path>
-    </svg>
-    <span>&nbsp;🔗Official Website</span>
-  </a>
-  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="https://arxiv.org/pdf/2505.17464" title="Paper (PDF)" target="_blank" rel="noopener">
-    <!-- file/pdf icon -->
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-         aria-hidden="true">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-      <polyline points="14 2 14 8 20 8"></polyline>
-      <line x1="8" y1="13" x2="16" y2="13"></line>
-      <line x1="8" y1="17" x2="16" y2="17"></line>
-    </svg>
-    <span>&nbsp;📄 Paper (PDF)</span>
-  </a>
-</p>
 
 # Hydra: Structured Cross-Source Enhanced LLM Reasoning (EMNLP2025, Main Conference)  
+
+
+<p align="center">
+  <!-- Project homepage -->
+<a href="https://stevetantan.github.io/Hydra/" target="_blank">
+  <img src="hydra-logo-purple-1024.png" alt="Hydra Logo" height="28" style="vertical-align:middle; margin-right:4px;">
+  <img alt="Project Page"
+       src="https://img.shields.io/badge/Page-Homepage-00BFFF?style=for-the-badge&logoColor=white">
+</a>
+
+
+  <!-- arXiv -->
+  <a href="https://arxiv.org/pdf/2505.17464" target="_blank">
+    <img alt="arXiv"
+         src="https://img.shields.io/badge/arXiv-2505.17464-FF4500?style=for-the-badge&logo=arxiv&logoColor=white">
+  </a>
+
+
+
+
+  <!-- Stars -->
+  <a href="https://github.com/SteveTANTAN/HydraRAG/stargazers" target="_blank">
+    <img alt="GitHub Stars"
+         src="https://img.shields.io/github/stars/SteveTANTAN/HydraRAG?style=for-the-badge&label=stars&color=FFD700&logo=github&logoColor=black">
+  </a>
+
+  <!-- Plog: Agentic Data Lab -->
+<a href="https://mp.weixin.qq.com/s/7PFIr8y93vDgOjUlOXXM6A" target="_blank">
+  <img alt="Plog: Agentic Data Lab (中文)"
+       src="https://img.shields.io/badge/Plog-Agentic%20Data%20Lab-8A2BE2?style=for-the-badge&logo=wechat&logoColor=white">
+</a>
+</p>
 
 
 
