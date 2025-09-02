@@ -31,7 +31,7 @@
   </a>
 
   <!-- Plog: Agentic Data Lab -->
-<a href="https://mp.weixin.qq.com/s/7PFIr8y93vDgOjUlOXXM6A" target="_blank">
+<a href="https://mp.weixin.qq.com/s/_KqhbvPE3ZML-3Hwm-WqKQ" target="_blank">
   <img alt="Plog: Agentic Data Lab (中文)"
        src="https://img.shields.io/badge/Plog-Agentic%20Data%20Lab-8A2BE2?style=for-the-badge&logo=wechat&logoColor=white">
 </a>
@@ -216,6 +216,7 @@ python check_answer.py \
 
 ## Claims
 This project uses the Apache 2.0 protocol. The project assumes no legal responsibility for any of the model's output and will not be held liable for any damages that may result from the use of the resources and output.
+
 
 
 
