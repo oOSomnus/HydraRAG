@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HydraRAG: Structured LLM Reasoning</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for a light, professional look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f3e8ff, #ffffff, #e6e6fa);
+        }
+        .container {
+            /* Use a semi-transparent background for a modern effect */
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.25);
+        }
+        .btn-gradient:active {
+            transform: translateY(1px);
+        }
+        .hydra-logo {
+            animation: bounceIn 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 md:p-8 text-gray-800">
+    <div class="container rounded-3xl shadow-2xl p-6 sm:p-10 text-center w-full max-w-2xl">
+        <!-- Hydra Logo Image -->
+        <div class="flex justify-center mb-6 hydra-logo">
+            <img src="hydra-logo-purple-1024.png" alt="HydraRAG logo" class="w-20 h-20">
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-3 tracking-tight text-gray-800">
+            HydraRAG
+        </h1>
+        <p class="text-xl text-gray-600 font-light max-w-md mx-auto mb-8">
+            Structured Cross-Source Enhanced Large Language Model Reasoning<br>
+            <span class="text-gray-500 text-base font-medium">(EMNLP 2025 Main Conference)</span>
+        </p>
+
+        <!-- Buttons Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a class="btn-gradient text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl flex items-center justify-center space-x-2" 
+                href="https://stevetantan.github.io/Hydra/" target="_blank" rel="noopener">
+                <!-- Website icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+                <span>Project Page</span>
+            </a>
+            <a class="btn-gradient text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl flex items-center justify-center space-x-2" 
+                href="https://github.com/SteveTANTAN/HydraRAG" target="_blank" rel="noopener">
+                <!-- GitHub icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 2 8.5 8.5 0 0 0 12 4c-.72 0-1.4 0-2 0C4.37 5.22 3.65 9.42 5 12h-1c-.24-1.35-.55-2.55-1.12-3.83" />
+                    <path d="M12 17c-1.5 0-3-.5-4.5-1.5" />
+                    <path d="M22 22v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 2 8.5 8.5 0 0 0 12 4c-.72 0-1.4 0-2 0C4.37 5.22 3.65 9.42 5 12h-1c-.24-1.35-.55-2.55-1.12-3.83" />
+                </svg>
+                <span>GitHub Repo</span>
+            </a>
+            <a class="btn-gradient text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl flex items-center justify-center space-x-2" 
+                href="https://arxiv.org/pdf/2505.17464" target="_blank" rel="noopener">
+                <!-- PDF icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <line x1="10" y1="9" x2="8" y2="9" />
+                </svg>
+                <span>Paper PDF</span>
+            </a>
+        </div>
+
+        <!-- Citation Section -->
+        <div class="mt-10 text-left relative">
+            <p class="text-lg font-bold text-gray-700 mb-2">Cite Us by:</p>
+            <button id="copy-btn" class="absolute top-0 right-0 m-4 px-3 py-1 bg-purple-500 text-white rounded-lg text-sm font-semibold hover:bg-purple-600 transition-colors duration-200">
+                <!-- Clipboard icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span id="copy-text">Copy</span>
+            </button>
+            <pre class="bg-gray-100 p-4 rounded-xl text-sm overflow-x-auto text-gray-800"><code>@misc{tan2025hydra,
+    title={Hydra: Structured Cross-Source Enhanced Large Language Model Reasoning}, 
+    author={Xingyu Tan and Xiaoyang Wang and Qing Liu and Xiwei Xu and Xin Yuan and Liming Zhu and Wenjie Zhang},
+    year={2025},
+    eprint={2505.17464},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2505.17464}, 
+}</code></pre>
+        </div>
+    </div>
+    
+    <script>
+        const copyBtn = document.getElementById('copy-btn');
+        const copyTextSpan = document.getElementById('copy-text');
+        const citationCode = document.querySelector('pre code');
+    
+        copyBtn.addEventListener('click', () => {
+            const textToCopy = citationCode.textContent;
+    
+            // Try to use modern Clipboard API
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showCopiedFeedback();
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    // Fallback if Clipboard API fails
+                    fallbackCopyText(textToCopy);
+                });
+            } else {
+                // Fallback for older browsers
+                fallbackCopyText(textToCopy);
+            }
+        });
+    
+        function showCopiedFeedback() {
+            copyTextSpan.textContent = 'Copied!';
+            setTimeout(() => {
+                copyTextSpan.textContent = 'Copy';
+            }, 2000);
+        }
+    
+        function fallbackCopyText(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            textArea.style.top = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopiedFeedback();
+                } else {
+                    console.error('Fallback: Oops, unable to copy');
+                }
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html>
