@@ -452,42 +452,43 @@ def wiki_search(wiki_topic_entity, thinking_cot_line, emb_model,timeout=6, k=3):
     return paragraph_Related,wiki_source_db
 
 
-def get_predict_entity(predict_entity, topic_entity, 
-wiki_topic_entity, total_id_to_name_dict, wiki_total_id_to_name_dict, 
+def get_predict_entity(predict_entity, topic_entity,
+wiki_topic_entity, total_id_to_name_dict, wiki_total_id_to_name_dict,
 predict_CoT_list, final_path_toal, Global_depth, using_freebase, using_wikikg):
     wiki_id_CoT = []
-    free_id_CoT = []
+    # Freebase functionality removed - only using Wikidata now
+    # free_id_CoT = []  # Removed Freebase functionality
 
-    if using_freebase and len(topic_entity) > 0:        
-        top_result = get_most_similar_entities_bert(total_id_to_name_dict, predict_entity, top_k=3)
-        print("top_result:", top_result)
-        if len(top_result) > 0:
-            for (predict_id, name, sim,original_name) in top_result:
-                if sim < 0.8 or "nnamed" in name :
-                    continue
-                CoT_indicter = ""
-                for i in predict_CoT_list:
-                    if original_name in i:
-                        CoT_indicter = i
-                        break
-                sorted_CoT_entity_name = reorder_entities(CoT_indicter, list(topic_entity.values())+[original_name])
-                sorted_CoT_entity_id = []
-                wiki_sorted_CoT_entity_id = []
-                for temp_name in sorted_CoT_entity_name:
-                    found = False
-                    for te_id, te_entity in topic_entity.items():
-                        if te_entity == temp_name:
-                            found = True
-                            sorted_CoT_entity_id.append(te_id)
-                            break
-                    if found == False:
-                        sorted_CoT_entity_id.append(predict_id)
-                free_id_CoT.append((sorted_CoT_entity_id, CoT_indicter))
-        
+    # if using_freebase and len(topic_entity) > 0:  # Removed Freebase functionality
+    #     top_result = get_most_similar_entities_bert(total_id_to_name_dict, predict_entity, top_k=3)
+    #     print("top_result:", top_result)
+    #     if len(top_result) > 0:
+    #         for (predict_id, name, sim,original_name) in top_result:
+    #             if sim < 0.8 or "nnamed" in name :
+    #                 continue
+    #             CoT_indicter = ""
+    #             for i in predict_CoT_list:
+    #                 if original_name in i:
+    #                     CoT_indicter = i
+    #                     break
+    #             sorted_CoT_entity_name = reorder_entities(CoT_indicter, list(topic_entity.values())+[original_name])
+    #             sorted_CoT_entity_id = []
+    #             wiki_sorted_CoT_entity_id = []
+    #             for temp_name in sorted_CoT_entity_name:
+    #                 found = False
+    #                 for te_id, te_entity in topic_entity.items():
+    #                     if te_entity == temp_name:
+    #                         found = True
+    #                         sorted_CoT_entity_id.append(te_id)
+    #                         break
+    #                 if found == False:
+    #                     sorted_CoT_entity_id.append(predict_id)
+    #             free_id_CoT.append((sorted_CoT_entity_id, CoT_indicter))
+
     if using_wikikg and len(wiki_topic_entity) > 0:
         top_result = get_most_similar_entities_bert(wiki_total_id_to_name_dict, predict_entity, top_k=3)
         print("top_result:", top_result)
-        
+
         if len(top_result) > 0:
             for (wiki_predict_id, name, sim,original_name) in top_result:
                 if sim < 0.8 or "nnamed" in name :
@@ -498,7 +499,7 @@ predict_CoT_list, final_path_toal, Global_depth, using_freebase, using_wikikg):
                         CoT_indicter = i
                         break
                 sorted_CoT_entity_name = reorder_entities(CoT_indicter, list(topic_entity.values())+[original_name])
-                wiki_sorted_CoT_entity_id = []                        
+                wiki_sorted_CoT_entity_id = []
                 for temp_name in sorted_CoT_entity_name:
                     found = False
                     for te_id, te_entity in wiki_topic_entity.items():
@@ -510,20 +511,20 @@ predict_CoT_list, final_path_toal, Global_depth, using_freebase, using_wikikg):
                         wiki_sorted_CoT_entity_id.append(wiki_predict_id)
 
                 wiki_id_CoT.append((wiki_sorted_CoT_entity_id, CoT_indicter))
-    
+
     ToTal = []
     for ori_cot in predict_CoT_list:
-        free_id = []
+        # free_id = []  # Removed Freebase functionality
         wiki_id = []
-        for (id, CoT_line) in free_id_CoT:
-            if ori_cot in CoT_line:
-                free_id = id
-                break
+        # for (id, CoT_line) in free_id_CoT:  # Removed Freebase functionality
+        #     if ori_cot in CoT_line:
+        #         free_id = id
+        #         break
         for (id, CoT_line) in wiki_id_CoT:
             if ori_cot in CoT_line:
                 wiki_id = id
                 break
-        ToTal.append((free_id, wiki_id, ori_cot))
+        ToTal.append(([], wiki_id, ori_cot))  # Using empty list for freebase_id since it's removed
 
     print("ToTal:", ToTal)
     return ToTal
@@ -692,7 +693,7 @@ def path_generation_kg(question_cot, sorted_topic_entity_id, graph, total_id_to_
 def main_rag_process_multi(question_web, thinking_cot_line, question_id, data, split_answer, 
     online_search_db, emb_model, timeout=6, k=10,
     sorted_topic_entity_id=None,topic_entity=None,wiki_topic_entity=None,
-    using_web=True, using_wkidocument=True, using_freebase=True,using_wikiKG=True, if_using_all_r=True, using_tree_search =False,
+    using_web=True, using_wkidocument=True, using_freebase=False, using_wikiKG=True, if_using_all_r=True, using_tree_search =False,
     question_real_answer=None, Global_depth=3, predict_length=2, return_topN_ = 10,
     total_id_to_name_dict=None, graph=None, wiki_total_id_to_name_dict=None, wiki_graph=None
     ):
@@ -908,11 +909,12 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Disable summary generation.",
     )
-    parser.add_argument(
-        "--no-freebase",
-        action="store_true",
-        help="Disable the Freebase knowledge graph.",
-    )
+    # Removed Freebase option since Freebase support is discontinued
+    # parser.add_argument(
+    #     "--no-freebase",
+    #     action="store_true",
+    #     help="Disable the Freebase knowledge graph.",
+    # )
     parser.add_argument(
         "--no-wikikg",
         action="store_true",
@@ -932,9 +934,9 @@ def build_parser() -> argparse.ArgumentParser:
     # ---------- Other options ----------
     parser.add_argument(
         "--model",
-        choices=["gpt3", "gpt4", "llama", "deepseek", "llama70b"],
-        default="llama70b",
-        help="Select the large language model (default: llama70b).",
+        choices=["gpt3", "gpt4", "llama", "deepseek", "llama70b", "qwen", "qwen25", "qwen3"],
+        default="qwen",
+        help="Select the large language model (default: qwen).",
     )
     parser.add_argument(
         "--depth",
@@ -958,7 +960,8 @@ if __name__ == "__main__":
     incomplete_ratio = args.ratio/100
 
     using_summary    = not args.no_summary
-    using_freebase   = not args.no_freebase
+    # Freebase is completely removed from the system - setting to False
+    using_freebase   = False
     using_wikiKG     = not args.no_wikikg
     using_web        = not args.no_web
     using_wkidocument= not args.no_wikidocu
@@ -1004,10 +1007,11 @@ if __name__ == "__main__":
     # wiki_NL_subgraph_db = f'../wiki_subgraph/{file_name}_main_nl_Subgraphs.db'
 
 
-    subgraph_db       = f'/data1/xingyut/PoG2/PoG/free_subgraph/{file_name}_multi_main_Subgraphs.db'
-    NL_subgraph_db    = f'/data1/xingyut/PoG2/PoG/free_subgraph/{file_name}_multi_main_nl_Subgraphs.db'
-    wiki_subgraph_db  = f'/data1/xingyut/PoG2/PoG/wiki_subgraph/{file_name}_main_Subgraphs.db'
-    wiki_NL_subgraph_db = f'/data1/xingyut/PoG2/PoG/wiki_subgraph/{file_name}_main_nl_Subgraphs.db'
+    # Updated to use local Wikidata database paths since Freebase is discontinued
+    subgraph_db       = f'../wikidata_subgraph/{file_name}_multi_main_Subgraphs.db'
+    NL_subgraph_db    = f'../wikidata_subgraph/{file_name}_multi_main_nl_Subgraphs.db'
+    wiki_subgraph_db  = f'../wikidata_subgraph/{file_name}_main_Subgraphs.db'
+    wiki_NL_subgraph_db = f'../wikidata_subgraph/{file_name}_main_nl_Subgraphs.db'
 
 
   
@@ -1112,11 +1116,17 @@ if __name__ == "__main__":
             topic_entity, wiki_topic_entity,LLM_model,using_freebase, using_wikiKG, using_web, using_wkidocument)
         Num_run_LLM += 1
 
-        graph, total_id_to_name_dict = load_and_check_subgraph(question, question_id,subgraph_db, 
+        graph, total_id_to_name_dict = load_and_check_subgraph(question, question_id,subgraph_db,
         Global_depth, NL_subgraph_db, question_string, data, topic_entity, incomplete, incomplete_ratio)
-        
-        wiki_graph, wiki_total_id_to_name_dict = wiki_load_and_check_subgraph(question, question_id,wiki_subgraph_db, 
-        Global_depth, wiki_NL_subgraph_db, question_string, data, wiki_topic_entity, None, incomplete, incomplete_ratio)
+
+        # Initialize Wikidata API client if wiki_client is None
+        wiki_client_to_use = None
+        if using_wikiKG:
+            from wikidata_api_client import wikidata_client_adapter
+            wiki_client_to_use = wikidata_client_adapter
+
+        wiki_graph, wiki_total_id_to_name_dict = wiki_load_and_check_subgraph(question, question_id,wiki_subgraph_db,
+        Global_depth, wiki_NL_subgraph_db, question_string, data, wiki_topic_entity, wiki_client_to_use, incomplete, incomplete_ratio)
         
 
 
@@ -1134,7 +1144,7 @@ if __name__ == "__main__":
 
         print("========main_rag_process finished")
         
-        final_KG_paths = [item["path_text"] for item in top20 if item.get("source") in ["freebaseKG", "wikiKG"]]
+        final_KG_paths = [item["path_text"] for item in top20 if item.get("source") in ["wikiKG"]]  # Removed "freebaseKG" since Freebase is discontinued
         web_kg_param = [item["path_text"] for item in top20 if item.get("source") == "webDoc"]
         wiki_document_kg_param = [item["path_text"] for item in top20 if item.get("source") == "wikiDoc"]
         # text to paths
@@ -1187,7 +1197,7 @@ if __name__ == "__main__":
                 "LLM_call": LLM_call,
                 "web_document_param": web_kg_param,
                 "wiki_document_param": wiki_document_kg_param,
-                "freebase_kg": 1 if using_freebase else 0,
+                "freebase_kg": 0,  # Set to 0 since Freebase is discontinued
                 "wiki_kg":1 if using_wikiKG else 0,
                 "wiki_docuemnt":1 if using_wkidocument else 0,
                 "web_docuemnt": 1 if using_web else 0,
@@ -1272,7 +1282,7 @@ if __name__ == "__main__":
                     
 
 
-            new_final_KG_paths = [item["path_text"] for item in new_top20 if item.get("source") in ["freebaseKG", "wikiKG"]]
+            new_final_KG_paths = [item["path_text"] for item in new_top20 if item.get("source") in ["wikiKG"]]  # Removed "freebaseKG" since Freebase is discontinued
             new_web_kg_param = [item["path_text"] for item in new_top20 if item.get("source") == "webDoc"]
             new_wiki_document_kg_param = [item["path_text"] for item in new_top20 if item.get("source") == "wikiDoc"]
             
@@ -1329,7 +1339,7 @@ if __name__ == "__main__":
                     "LLM_call": LLM_call,
                     "web_document_param": web_kg_param,
                     "wiki_document_param": wiki_document_kg_param,
-                    "freebase_kg": 1 if using_freebase else 0,
+                    "freebase_kg": 0,  # Set to 0 since Freebase is discontinued
                     "wiki_kg":1 if using_wikiKG else 0,
                     "wiki_docuemnt":1 if using_wkidocument else 0,
                     "web_docuemnt": 1 if using_web else 0,
@@ -1372,7 +1382,7 @@ if __name__ == "__main__":
             "LLM_call": LLM_call,
             "web_document_param": web_kg_param,
             "wiki_document_param": wiki_document_kg_param,
-            "freebase_kg": 1 if using_freebase else 0,
+            "freebase_kg": 0,  # Set to 0 since Freebase is discontinued
             "wiki_kg":1 if using_wikiKG else 0,
             "wiki_docuemnt":1 if using_wkidocument else 0,
             "web_docuemnt": 1 if using_web else 0,

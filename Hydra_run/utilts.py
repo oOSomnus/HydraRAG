@@ -2,7 +2,8 @@ from __future__ import annotations
 from typing import List, Tuple, Dict
 import heapq
 from collections import defaultdict
-from freebase_func import *
+# Removed Freebase import, now using Wikidata API client
+from wikidata_api_client import *
 from cot_prompt_list import *
 from wiki_client import *
 from openai import OpenAI
@@ -10,15 +11,85 @@ import json
 import re
 import time
 import requests
+import os
 from rank_bm25 import BM25Okapi
 from sentence_transformers import util
 from sentence_transformers import SentenceTransformer
 import google.generativeai as genai
-import os
 import re
 import time
-import tiktoken 
+import tiktoken
 from subgraph_helper import *
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Wrapper functions for compatibility with existing code structure
+def execurte_sparql(sparql_txt):
+    # This function is deprecated since we're not using SPARQL directly anymore
+    # Using Wikidata public API instead
+    print("execurte_sparql is deprecated, using Wikidata API client")
+    return []
+
+def execute_sparql(sparql_txt):
+    # This function is deprecated since we're not using SPARQL directly anymore
+    # Using Wikidata public API instead
+    print("execute_sparql is deprecated, using Wikidata API client")
+    return []
+
+def replace_relation_prefix(relations):
+    # This function is for Freebase compatibility, returning relations as is for Wikidata
+    if relations is None:
+        return []
+    # Freebase function was replacing "http://rdf.freebase.com/ns/" prefix
+    # For Wikidata, relations come as direct property IDs
+    return relations
+
+def replace_entities_prefix(entities):
+    # This function is for Freebase compatibility, returning entities as is for Wikidata
+    if entities is None:
+        return []
+    # Freebase function was replacing "http://rdf.freebase.com/ns/" prefix
+    # For Wikidata, entities come as direct entity IDs
+    return entities
+
+def format(entity_id):
+    # This function is for Freebase compatibility, returning entity_id as is for Wikidata
+    return entity_id
+
+def format1(entity_id):
+    # This function is for Freebase compatibility, returning entity_id as is for Wikidata
+    if "http://" in entity_id:
+        return f"<{entity_id}>"
+    else:
+        return f"wd:{entity_id}"
+    return entity_id
+
+def id2entity_name_or_type(entity_id):
+    # Use the new Wikidata API function
+    return get_entity_name_or_type(entity_id)
+
+def replace_prefix1(results):
+    # This function was replacing prefixes for Freebase results
+    # For Wikidata, return results in appropriate format
+    if results is None:
+        return []
+
+    # Convert Wikidata API results to expected format
+    processed_results = []
+    for item in results:
+        if isinstance(item, dict):
+            processed_item = {}
+            for key, value in item.items():
+                if isinstance(value, dict) and 'value' in value:
+                    processed_value = value['value'].replace("http://www.wikidata.org/entity/", "")
+                    processed_value = processed_value.replace("http://www.wikidata.org/prop/direct/", "")
+                    processed_item[key] = {'value': processed_value}
+                else:
+                    processed_item[key] = value
+            processed_results.append(processed_item)
+    return processed_results
 
 def count_tokens(text, model="gpt-3.5-turbo"):
     encoding = tiktoken.encoding_for_model(model)
@@ -27,7 +98,7 @@ def count_tokens(text, model="gpt-3.5-turbo"):
 def run_LLM(prompt, model,temperature=0.4):
     result = ''
     if "google" in model:
-        genai.configure(api_key="your_api_key")
+        genai.configure(api_key=os.getenv("GOOGLE_API_KEY", "your_api_key"))
 
         # model = genai.GenerativeModel('gemini-1.5-flash')
         model = genai.GenerativeModel("gemini-1.5-flash")
@@ -56,7 +127,7 @@ def run_LLM(prompt, model,temperature=0.4):
 
     # openai_api_base = "http://localhost:8000/v1"
     elif "gpt" in model:
-        openai_api_key = "your_api_key"
+        openai_api_key = os.getenv("OPENAI_API_KEY", "your_api_key")
         if model == "gpt4":
             model = "gpt-4-turbo"
         else:
@@ -86,8 +157,8 @@ def run_LLM(prompt, model,temperature=0.4):
         )
         model = "Meta-Llama-3.1-8B-Instruct"
     elif "deep" in model:
-        
-        openai_api_key = "your_api_key"
+
+        openai_api_key = os.getenv("DEEPSEEK_API_KEY", "your_api_key")
         openai_api_base = "https://api.deepseek.com"
 
         client = OpenAI(
@@ -96,15 +167,22 @@ def run_LLM(prompt, model,temperature=0.4):
         )
         model = "deepseek-chat"
     elif "qwen" in model:
-        print("using local qwen")
-        openai_api_base = "your_api_key"
-        openai_api_key = "EMPTY"
+        print("using Aliyun Qwen API")
+        # 阿里云 DashScope API 兼容 OpenAI 格式
+        qwen_api_key = os.getenv("QWEN_API_KEY", os.getenv("DASHSCOPE_API_KEY", "your_api_key"))
+        openai_api_base = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
         client = OpenAI(
-            # defaults to os.environ.get("OPENAI_API_KEY")
-            api_key=openai_api_key,
+            api_key=qwen_api_key,
             base_url=openai_api_base,
         )
-        model = "qwen2.5-7b-instruct-1m"
+        # 根据模型名称选择具体的 Qwen 模型
+        if "qwen2.5" in model or "qwen25" in model:
+            model = "qwen2.5-72b-instruct"
+        elif "qwen3" in model:
+            model = "qwen-plus"
+        else:
+            model = "qwen-plus"
 
     else:
         print("using local openai")
@@ -149,9 +227,11 @@ def run_LLM(prompt, model,temperature=0.4):
 
 def select_source_agent(analysised_question, topic_entity, wiki_topic_entity, LLM_model, using_freebase, using_wikiKG, using_web, using_wkidocument):
     data_avaliavle = ""
-    if using_freebase or using_wikiKG:
-        if len(topic_entity) > 0 or len(wiki_topic_entity) > 0:
-            data_avaliavle += "KG on (" + str([i for i in topic_entity.values()]) + "), "
+    # Updated to exclude Freebase since it's been discontinued
+    # if using_freebase or using_wikiKG:  # Original logic
+    if using_wikiKG:  # Only Wikidata KG now
+        if len(wiki_topic_entity) > 0:  # Changed from topic_entity to wiki_topic_entity for Wikidata
+            data_avaliavle += "KG on (" + str([i for i in wiki_topic_entity.values()]) + "), "
     if using_wkidocument:
         if len(wiki_topic_entity) > 0:
             data_avaliavle += "wiki on (" + str([i for i in wiki_topic_entity.values()]) + "), "
@@ -178,8 +258,9 @@ def select_source_agent(analysised_question, topic_entity, wiki_topic_entity, LL
 
     if "kg" not in source_select_answer.lower():
         if "action1" not in source_select_answer.lower():
-            using_freebase = False
-            using_wikiKG = False
+            # Freebase is disabled
+            # using_freebase = False  # Already disabled by default
+            using_wikiKG = False  # Wikidata KG will be disabled
             print("not using KG")
     if "web" not in source_select_answer.lower():
         if "action3" not in source_select_answer.lower():
@@ -192,7 +273,8 @@ def select_source_agent(analysised_question, topic_entity, wiki_topic_entity, LL
 
     if not (using_freebase or using_wikiKG or using_web or using_wkidocument):
         print("not using any KG or web or wiki; turn it on")
-        using_freebase = True
+        # Freebase is disabled by default since we're using Wikidata API instead
+        using_freebase = False  # Changed from True to False
         using_wikiKG = True
         using_web = True
         using_wkidocument = True
@@ -722,6 +804,11 @@ def explore_graph_from_entities_by_hop_neighbor_1(entity_ids, max_depth=5):
 
 
 def wiki_search_relations_and_entities_combined_1(entity_id, wiki_client, pre_relations=None, pre_head=False):
+    if wiki_client is None:
+        # Use Wikidata API client adapter as fallback
+        from wikidata_api_client import wikidata_client_adapter
+        wiki_client = wikidata_client_adapter
+
     if pre_relations is None:
         pre_relations = set()
 

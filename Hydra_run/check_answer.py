@@ -154,9 +154,9 @@ def build_parser() -> argparse.ArgumentParser:
     # ---------- Other options ----------
     parser.add_argument(
         "--model",
-        choices=["gpt3", "gpt4", "llama", "deepseek", "llama70b"],
-        default="llama70b",
-        help="Select the large language model (default: llama70b).",
+        choices=["gpt3", "gpt4", "llama", "deepseek", "llama70b", "qwen", "qwen25", "qwen3"],
+        default="qwen",
+        help="Select the large language model (default: qwen).",
     )
     parser.add_argument(
         "--depth",

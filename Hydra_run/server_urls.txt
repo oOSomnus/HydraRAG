@@ -1,10 +1,7 @@
-http://XXXX:XXXX
-http://XXXX:XXXX
-http://XXXX:XXXX
-http://XXXX:XXXX
-http://XXXX:XXXX
-http://XXXX:XXXX
-http://XXXX:XXXX
-http://XXXX:XXXX
-http://XXXX:XXXX
-http://XXXX:XXXX
+# Wikidata SPARQL endpoints for HydraRAG Wikidata-only mode
+# This file is maintained for compatibility with the original code structure
+# Actual Wikidata queries are now made through the public API endpoint
+# configured in wikidata_api_client.py
+
+# Placeholder to satisfy file existence requirement
+# The actual endpoint used is https://query.wikidata.org/sparql (in wikidata_api_client.py)

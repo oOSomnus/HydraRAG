@@ -42,17 +42,27 @@ def wiki_relation_search(entity_id, entity_name, pre_relations, pre_head, remove
 
 def wiki_entity_search(entity_id, relation, wiki_client, head):
     rid = wiki_client.query_all("label2pid", relation)
-    if not rid or rid == "Not Found!":
+    if not rid or rid == "Not Found!" or isinstance(rid, str):
         return []
 
-    rid_str = rid.pop()
+    # Handle both list and set-like results
+    if isinstance(rid, list):
+        if not rid:
+            return []
+        rid_str = rid.pop()
+    else:
+        # Handle iterable that's not a list
+        rid_list = list(rid)
+        if not rid_list:
+            return []
+        rid_str = rid_list[0]
 
     entities = wiki_client.query_all("get_tail_entities_given_head_and_relation", entity_id, rid_str)
 
     if head:
-        entities_set = entities['tail']
+        entities_set = entities.get('tail', [])
     else:
-        entities_set = entities['head']
+        entities_set = entities.get('head', [])
 
     if not entities_set:
         values = wiki_client.query_all("get_tail_values_given_head_and_relation", entity_id, rid_str)

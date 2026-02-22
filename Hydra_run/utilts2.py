@@ -1,9 +1,15 @@
 import re
+import os
+from dotenv import load_dotenv
 from cot_prompt_list import *
 # from subgraph_utilts import *
 from subgraph_helper import *
 # from search import *
-serpapi_Key = "your_own_keys"
+
+# Load environment variables from .env file
+load_dotenv()
+
+serpapi_Key = os.getenv("SERP_API_KEY", "your_own_keys")
 
 Num_run_LLM = 0
 Global_depth = 3
